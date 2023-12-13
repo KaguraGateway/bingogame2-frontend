@@ -1,7 +1,8 @@
 "use client";
 
 import React from 'react';
-import { Flex, FlexProps } from "@chakra-ui/react";
+import { Button, Flex, FlexProps } from "@chakra-ui/react";
+import styles from './NumberIcon.module.scss';
 
 export type NumberIconProps = {
     children: React.ReactNode;
@@ -18,6 +19,12 @@ export function NumberIcon(props: NumberIconProps) {
           w="2.5em"
           h="2.5em"
           fontSize="1.3em"
-          {...props}>{props.children}</Flex>
+          {...props}>
+              {props.children}
+        </Flex>
     )
 };
+
+function OnClick() {
+  console.log("OnClick")
+}
