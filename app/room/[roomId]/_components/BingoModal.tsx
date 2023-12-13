@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
 import { Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { Modal } from "@chakra-ui/react";
 import { ModalOverlay } from "@chakra-ui/react";
@@ -9,10 +8,11 @@ import { ModalBody } from "@chakra-ui/react";
 import { Container } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
-import FilterIcon from "@/public/vercel.svg";
+import { PrizeSpinResultType } from "@/schema/prize";
 
 export const BingoModalTypes = {
-    Bingo: 1,
+    Bingo: 0,
+    BingoTurn: 1,
     Drawing: 2,
     Result: 3
 } as const;
@@ -20,19 +20,31 @@ export type BingoModalType = typeof BingoModalTypes[keyof typeof BingoModalTypes
 
 type BingoModalProps = {
     isOpen: boolean;
-    onOpen: () => void;
     onClose: () => void;
     type: BingoModalType;
     setBingoModalType: (type: BingoModalType) => void;
-    prizeResult: PrizeResultMessage | null;
+    prizeResult: PrizeSpinResultType | null;
+    requestPrizeSpin: () => void;
 }
 
 function BingoModalBingo(props: BingoModalProps) {
-    // const {socketio} = useContext(SocketIOContext);
+    return (
+        <VStack>
+            <Box>
+                <Flex w="48px" h="48px" bg="green.100" borderRadius="50%" justifyContent="center" alignItems="center">
+                    <CheckIcon w="24px" h="24px" color="green.500" />
+                </Flex>
+            </Box>
+            <Text fontSize="2xl" fontWeight="bold">BINGO！！</Text>
+            <Text color="gray.500" fontSize="sm">「景品抽選」の順番が来るまでお待ち下さい</Text>
+        </VStack>
+    )
+}
 
+function BingoModalBingoTurn(props: BingoModalProps) {
     const handleClickBingoDraw = () => {
-        // socketio.emit("requestPrize");
         props.setBingoModalType(BingoModalTypes.Drawing);
+        props.requestPrizeSpin();
     };
 
     return (
@@ -48,6 +60,14 @@ function BingoModalBingo(props: BingoModalProps) {
                 <Button size="md" w="100%" color="white" bgColor="yellow.500" onClick={handleClickBingoDraw}>景品抽選</Button>
             </Box>
         </VStack>
+    )
+}
+
+function FilterIcon() {
+    return (
+        <Icon viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 18H14V16H10V18ZM3 6V8H21V6H3ZM6 13H18V11H6V13Z" fill="currentColor" />
+        </Icon>
     )
 }
 
@@ -74,7 +94,7 @@ function BingoModalResult(props: BingoModalProps) {
         <VStack>
             <Text fontSize="2xl" fontWeight="bold">おめでとうございます！！</Text>
             <Box>
-                <Flex w="48px" h="48px" bg="orange.500" color="whiteAlpha.900" fontSize="1.2em" borderRadius="50%" justifyContent="center" alignItems="center">{props.prizeResult?.prizeNumber.prizeNumber}</Flex>
+                <Flex w="48px" h="48px" bg="orange.500" color="whiteAlpha.900" fontSize="1.2em" borderRadius="50%" justifyContent="center" alignItems="center">{props.prizeResult?.PrizeNumber}</Flex>
             </Box>
             <Text color="gray.500" fontSize="sm">表示された景品番号の景品と</Text>
             <Text color="gray.500" fontSize="sm">引き換えてください</Text>
@@ -87,6 +107,8 @@ function BingoModalResult(props: BingoModalProps) {
 
 function BingoModalRouter(props: BingoModalProps) {
     switch (props.type) {
+        case BingoModalTypes.BingoTurn:
+            return <BingoModalBingoTurn {...props} />
         case BingoModalTypes.Bingo:
             return <BingoModalBingo {...props} />
         case BingoModalTypes.Drawing:
@@ -98,7 +120,7 @@ function BingoModalRouter(props: BingoModalProps) {
 
 export function BingoModal(props: BingoModalProps) {
     return (
-        <Modal isOpen={props.isOpen} onClose={() => {}}>
+        <Modal isOpen={props.isOpen} onClose={() => { }}>
             <ModalOverlay />
             <ModalContent mx="1rem">
                 <ModalBody p="2em 0">

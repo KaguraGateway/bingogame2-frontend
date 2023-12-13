@@ -1,84 +1,37 @@
-"use client";
+'use client';
 
-import { NextPage } from "next";
-import { Header } from '@/ui/Header';
-import { BingoCard } from "@/ui/BingoCard";
-import { Alert, AlertIcon, Box, Center, Container, Flex, Text, useControllableState, useDisclosure } from "@chakra-ui/react";
-import Head from "next/head";
-import { BingoAccountModal } from "@/ui/BingoAccountModal";
-import { BingoModal, BingoModalType, BingoModalTypes } from "@/ui/BingoModal";
-import { useContext, useEffect } from "react";
-// import { BingoContext, BingoProvider } from "../src/contexts/bingo-context";
-// import { SocketIOContext, SocketIOProvider } from "../src/contexts/socketio-context";
-//@ts-ignore
-import useSound from "use-sound";
+import { Box, Button, Center, Container, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { HeaderAdmin } from "./_components/HeaderAdmin";
+import { BingoNumber } from "@/ui/BingoNumber";
+import { ReactIcon } from "@chakra-ui/icons";
+import { AdminBingoModal } from "./_components/AdminBingoModal";
+import { useAdminUseCase } from "./usecase";
 
-const BingoContent: React.FC = () => {
-    // const {socketio} = useContext(SocketIOContext);
-    // const {name} = useContext(BingoContext);
-    const bingoModal = useDisclosure();
-    const [ bingoModalType, setBingoModalType ] = useControllableState<BingoModalType>({defaultValue: BingoModalTypes.Bingo});
-    // const [ activePrizeResult, setActivePrizeResult ] = useControllableState<PrizeResultMessage>({defaultValue: null!});
-    const [play] = useSound("../public/Decision.wav");
-
-    // useEffect(() => {
-    //     const handleBingo = (obj: BingoMessage) => {
-    //         play();
-    //         console.log(obj);
-    //         setBingoModalType(BingoModalTypes.Bingo);
-    //         bingoModal.onOpen();
-    //     }
-    //     const handlePrizeResult = (obj: PrizeResultMessage) => {
-    //         console.log(obj);
-    //         setTimeout(() => {
-    //             setActivePrizeResult(obj);
-    //             setBingoModalType(BingoModalTypes.Result);
-    //         }, 2000);
-    //     }
-    //     socketio.on("bingo", handleBingo);
-    //     socketio.on("prizeResult", handlePrizeResult);
-
-    //     return () => {
-    //         socketio.off("bingo", handleBingo);
-    //         socketio.off("prizeResult", handlePrizeResult);
-    //     }
-    // }, [socketio, bingoModal, setBingoModalType, setActivePrizeResult, play]);
+export default function Page() {
+    const { hitNumber, bingoNumbers, adminBingoModal, adminBingoModalType, spinState, prizes, activePrizeResult, activeBingo, StartBingoSpin, setAdminBingoModalType } = useAdminUseCase();
 
     return (
-        <Center flexDirection="column">
-            <Box p="24px">
-                <Text fontSize="lg" fontWeight="bold">{"山口"/*name*/} さんのビンゴカード</Text>
+        <>
+            <HeaderAdmin />
+            <Box as="main" mt="24px">
+                <Container maxW="container.xl">
+                    <Center flexDirection="column">
+                        <Text fontSize="10.5em" fontWeight="700" lineHeight={1} color="teal.600">{hitNumber}</Text>
+                        <Grid w="full" minH="340px" mt="24px" templateColumns="repeat(12, 1fr)">
+                            <GridItem colSpan={11}>
+                                <Flex maxW="full" flexWrap="wrap" minH="full" p="1.5em" flexDir="row" gap="10px" bgColor="white" border="1px solid" borderColor="gray.200" borderRadius="12px">
+                                    {[...bingoNumbers].reverse().map((bingoNumber, index) => <BingoNumber key={index} type="hitNumber" bingoNumber={bingoNumber} />
+                                    )}
+                                </Flex>
+                            </GridItem>
+                            <GridItem colSpan={1} ml="1em">
+                                <Button rightIcon={<ReactIcon />} size="lg" w="full" bg="teal.500" color="white" onClick={StartBingoSpin} isLoading={spinState}>Spin</Button>
+                            </GridItem>
+                        </Grid>
+                        <AdminBingoModal isOpen={adminBingoModal.isOpen} prizes={prizes} prizeResult={activePrizeResult} adminBingoMessage={activeBingo} onClose={adminBingoModal.onClose} onOpen={adminBingoModal.onOpen} type={adminBingoModalType} setBingoModalType={setAdminBingoModalType} />
+                    </Center>
+                </Container>
             </Box>
-            <BingoCard />
-            <Box w="full" mt="12px">
-                <Alert status="info" bg="#E2E8F0" w="full" borderRadius="6px">
-                    <AlertIcon color="#718096" />
-                    参加中：*人
-                </Alert>
-            </Box>
-            <BingoModal type={bingoModalType} prizeResult={"10"/*activePrizeResult*/} isOpen={bingoModal.isOpen} onClose={bingoModal.onClose} onOpen={bingoModal.onOpen} setBingoModalType={setBingoModalType} />
-        </Center>
+        </>
     );
 }
-
-const BingoPage: NextPage = () => {
-    return (
-      <>
-        {/*<SocketIOProvider>*/}
-            {/* <BingoProvider> */}
-                <Head>
-                    <title>Bingo</title>
-                </Head>
-                <Header />
-                <Box as="main">
-                    <Container>
-                        <BingoContent />
-                    </Container>
-                </Box>
-                <BingoAccountModal />
-            {/* </BingoProvider> */}
-        {/* </SocketIOProvider> */}
-      </>
-    );
-}
-export default BingoPage;
