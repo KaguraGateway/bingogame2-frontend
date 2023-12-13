@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { NumberIcon, NumberIconProps } from "@/ui/NumberIcon";
 

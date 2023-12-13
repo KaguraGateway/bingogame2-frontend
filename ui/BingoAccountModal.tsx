@@ -1,11 +1,13 @@
+"use client"
+
 import React, { useContext, useEffect } from "react";
-import { Button, Flex, FormControl, FormHelperText, FormLabel, Input, Stack, Text, useControllableState, useDisclosure, VStack } from "@chakra-ui/react";
+import { Button, Center, Flex, FormControl, FormHelperText, FormLabel, Input, Stack, Text, useControllableState, useDisclosure, VStack } from "@chakra-ui/react";
 import { Modal } from "@chakra-ui/react";
 import { ModalOverlay } from "@chakra-ui/react";
 import { ModalContent } from "@chakra-ui/react";
 import { ModalBody } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-import LogoSvg2 from "logo2.svg";
+import LogoSvg2 from "@/public/logo2.svg";
 // import { SocketIOContext } from "../../contexts/socketio-context";
 // import { BingoContext } from "../../contexts/bingo-context";
 
@@ -125,9 +127,9 @@ export function BingoAccountModal() {
             <ModalContent mx="1rem">
                 <ModalBody>
                     <Stack m="1rem 0" spacing={8}>
-                        <Box h="5em">
-                            <LogoSvg2 />
-                        </Box>
+                        <Center h="5em" >
+                            <LogoSvg2 width="300"/>
+                        </Center>
                         <Box>
                             <BingoModalRouter onClose={onClose} />
                         </Box>

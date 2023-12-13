@@ -1,71 +1,15 @@
-import { NextPage } from "next";
+"use client";
+
 import { Header } from "@/ui/Header";
-import { BingoCard } from "@/ui/BingoCard";
-import { Alert, AlertIcon, Box, Center, Container, Text, useControllableState, useDisclosure } from "@chakra-ui/react";
-import Head from "next/head";
 import { BingoAccountModal } from "@/ui/BingoAccountModal";
-import { BingoModal, BingoModalType, BingoModalTypes } from "@/ui/BingoModal";
-import { useContext, useEffect } from "react";
-// import { BingoContext, BingoProvider } from "../src/contexts/bingo-context";
-// import { SocketIOContext, SocketIOProvider } from "../src/contexts/socketio-context";
-// import useSound from "use-sound";
+import { Box, Container } from "@chakra-ui/react";
+import { BingoContent } from "./_components/BingoContent";
 
-const BingoContent: React.FC = () => {
-    // const {socketio} = useContext(SocketIOContext);
-    // const {name} = useContext(BingoContext);
-    const bingoModal = useDisclosure();
-    const [ bingoModalType, setBingoModalType ] = useControllableState<BingoModalType>({defaultValue: BingoModalTypes.Bingo});
-    // const [ activePrizeResult, setActivePrizeResult ] = useControllableState<PrizeResultMessage>({defaultValue: null!});
-    const [play] = useSound("../public/Decision.wav");
-
-    // useEffect(() => {
-    //     const handleBingo = (obj: BingoMessage) => {
-    //         play();
-    //         console.log(obj);
-    //         setBingoModalType(BingoModalTypes.Bingo);
-    //         bingoModal.onOpen();
-    //     }
-    //     const handlePrizeResult = (obj: PrizeResultMessage) => {
-    //         console.log(obj);
-    //         setTimeout(() => {
-    //             setActivePrizeResult(obj);
-    //             setBingoModalType(BingoModalTypes.Result);
-    //         }, 2000);
-    //     }
-    //     // socketio.on("bingo", handleBingo);
-    //     // socketio.on("prizeResult", handlePrizeResult);
-
-    //     return () => {
-    //         // socketio.off("bingo", handleBingo);
-    //         // socketio.off("prizeResult", handlePrizeResult);
-    //     }
-    // }, [socketio, bingoModal, setBingoModalType, setActivePrizeResult, play]);
-
-    return (
-        <Center flexDirection="column">
-            <Box p="24px">
-                <Text fontSize="lg" fontWeight="bold">{"山口" /*name*/} さんのビンゴカード</Text>
-            </Box>
-            <BingoCard />
-            <Box w="full" mt="12px">
-                <Alert status="info" bg="#E2E8F0" w="full" borderRadius="6px">
-                    <AlertIcon color="#718096" />
-                    参加中：*人
-                </Alert>
-            </Box>
-            <BingoModal type={bingoModalType} prizeResult={/*activePrizeResult*/"10"} isOpen={bingoModal.isOpen} onClose={bingoModal.onClose} onOpen={bingoModal.onOpen} setBingoModalType={setBingoModalType} />
-        </Center>
-    );
-}
-
-const BingoPage: NextPage = () => {
+export default function Page() {
     return (
         <>
         {/*<SocketIOProvider>*/}
             {/* <BingoProvider> */}
-                <Head>
-                    <title>Bingo</title>
-                </Head>
                 <Header />
                 <Box as="main">
                     <Container>
@@ -78,4 +22,3 @@ const BingoPage: NextPage = () => {
         </>
     );
 }
-export default BingoPage;

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext, useEffect } from "react";
 import { Button, Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { Modal } from "@chakra-ui/react";
@@ -7,7 +9,7 @@ import { ModalBody } from "@chakra-ui/react";
 import { Container } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
-import FilterIcon from "filterIcon.svg";
+import FilterIcon from "@/public/vercel.svg";
 
 export const BingoModalTypes = {
     Bingo: 1,
