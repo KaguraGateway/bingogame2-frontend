@@ -1,3 +1,5 @@
+"use client";
+
 import { NextPage } from "next";
 import { Header } from '@/ui/Header';
 import { BingoCard } from "@/ui/BingoCard";
@@ -8,7 +10,8 @@ import { BingoModal, BingoModalType, BingoModalTypes } from "@/ui/BingoModal";
 import { useContext, useEffect } from "react";
 // import { BingoContext, BingoProvider } from "../src/contexts/bingo-context";
 // import { SocketIOContext, SocketIOProvider } from "../src/contexts/socketio-context";
-// import useSound from "use-sound";
+//@ts-ignore
+import useSound from "use-sound";
 
 const BingoContent: React.FC = () => {
     // const {socketio} = useContext(SocketIOContext);

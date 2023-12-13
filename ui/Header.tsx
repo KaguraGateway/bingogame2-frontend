@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
 import { Box, Container, Flex } from "@chakra-ui/react";
-import LogoSvg from "/next.svg";
+import LogoSvg from "@/public/logo2.svg";
 
 export function Header() {
     return (
@@ -8,7 +10,7 @@ export function Header() {
             <Container maxW="container.lg" h="full">
                 <Flex justifyContent="center" alignItems="center" h="full">
                     <Box h="2em">
-                        <LogoSvg />
+                        <LogoSvg width="150"/>
                     </Box>
                 </Flex>
             </Container>
